@@ -116,10 +116,26 @@ namespace InventoryUI
             text.text = def.Name;
         }
 
+        private CursorLockMode _previousLockState;
+        private bool _previousCursorVisible;
+
         public void Toggle()
         {
             _visible = !_visible;
             _root.SetActive(_visible);
+
+            if (_visible)
+            {
+                _previousLockState = Cursor.lockState;
+                _previousCursorVisible = Cursor.visible;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Cursor.lockState = _previousLockState;
+                Cursor.visible = _previousCursorVisible;
+            }
         }
     }
 }
