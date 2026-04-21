@@ -13,6 +13,15 @@ namespace InventoryUI
         private int _selectedIndex = 0;
 
         public event Action<InventoryItem?>? OnSlotSelected;
+        public event Action<InventoryItem?>? OnItemUsed;
+        public event Action<InventoryItem?>? OnItemUsedAlt;
+        public event Action<InventoryItem?>? OnKeyDown;
+        public event Action<InventoryItem?>? OnUpdate;
+
+        internal void Use() => OnItemUsed?.Invoke(GetSelectedItem());
+        internal void AltUse() => OnItemUsedAlt?.Invoke(GetSelectedItem());
+        internal void KeyDown() => OnKeyDown?.Invoke(GetSelectedItem());
+        internal void Tick() => OnUpdate?.Invoke(GetSelectedItem());
 
         public Hotbar(GameObject canvas)
         {
@@ -69,15 +78,18 @@ namespace InventoryUI
             return slot;
         }
 
+        public InventoryItem? GetSelectedItem()
+        {
+            IReadOnlyList<InventoryItem> items = InventoryManager.Instance.PlayerInventory.Items;
+            return _selectedIndex < items.Count ? items[_selectedIndex] : null;
+        }
+
         public void SelectSlot(int index)
         {
             _slots[_selectedIndex].GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.7f);
             _selectedIndex = index;
             _slots[_selectedIndex].GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.4f);
-            InventoryItem? item = _selectedIndex < InventoryManager.Instance.PlayerInventory.Items.Count
-                ? InventoryManager.Instance.PlayerInventory.Items[_selectedIndex]
-                : null;
-            OnSlotSelected?.Invoke(item);
+            OnSlotSelected?.Invoke(GetSelectedItem());
         }
 
         public void Refresh(IReadOnlyList<InventoryItem> items)
