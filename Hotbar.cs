@@ -12,6 +12,8 @@ namespace InventoryUI
         private readonly GameObject[] _slots = new GameObject[SlotCount];
         private int _selectedIndex = 0;
 
+        public event Action<InventoryItem?>? OnSlotSelected;
+
         public Hotbar(GameObject canvas)
         {
             Instance = this;
@@ -72,6 +74,10 @@ namespace InventoryUI
             _slots[_selectedIndex].GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.7f);
             _selectedIndex = index;
             _slots[_selectedIndex].GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.4f);
+            InventoryItem? item = _selectedIndex < InventoryManager.Instance.PlayerInventory.Items.Count
+                ? InventoryManager.Instance.PlayerInventory.Items[_selectedIndex]
+                : null;
+            OnSlotSelected?.Invoke(item);
         }
 
         public void Refresh(IReadOnlyList<InventoryItem> items)
