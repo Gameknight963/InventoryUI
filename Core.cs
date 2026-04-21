@@ -27,7 +27,8 @@ namespace InventoryUI
             InventoryManager.Instance.PlayerInventory.OnChanged += () =>
                 Hotbar.Instance!.Refresh(InventoryManager.Instance.PlayerInventory.Items);
 
-            InventoryManager.Instance.PlayerInventory.AddItem("test_item", 2);
+            // test item, uncomment if you need it
+            //InventoryManager.Instance.PlayerInventory.AddItem("test_item", 2);
 
             canvasObj.AddComponent<ItemPickerBehaviour>();
             ItemPicker picker = new(canvasObj);
