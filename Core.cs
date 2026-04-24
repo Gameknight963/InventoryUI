@@ -13,8 +13,6 @@ namespace InventoryUI
         {
             if (sceneName != "Version 1.9 POST") return;
 
-            InventoryManager.Instance.RegisterItem(new ItemDefinition("test_item", "Test Item"));
-
             GameObject canvasObj = new("InventoryCanvas");
             Canvas canvas = canvasObj.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -27,6 +25,7 @@ namespace InventoryUI
                 Hotbar.Instance!.Refresh(InventoryManager.Instance.PlayerInventory.Items);
 
             // test item, uncomment if you need it
+            //InventoryManager.Instance.RegisterItem(new ItemDefinition("test_item", "Test Item"));
             //InventoryManager.Instance.PlayerInventory.AddItem("test_item", 2);
 
             canvasObj.AddComponent<ItemPickerBehaviour>();
