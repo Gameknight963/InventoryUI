@@ -18,13 +18,6 @@ namespace InventoryUI
                 if (Input.GetKeyDown(KeyCode.Alpha1 + i))
                     Hotbar.Instance.SelectSlot(i);
             }
-
-            if (Input.GetMouseButtonDown(0))
-                InventoryManager.Instance.UseItem();
-            if (Input.GetMouseButtonDown(1))
-                InventoryManager.Instance.AltUseItem();
-            if (Input.anyKeyDown)
-                InventoryManager.Instance.KeyDown();
         }
     }
 }
