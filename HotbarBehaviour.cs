@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using InventoryFramework;
 using MelonLoader;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace InventoryUI
 {
@@ -19,12 +20,11 @@ namespace InventoryUI
             }
 
             if (Input.GetMouseButtonDown(0))
-                Hotbar.Instance?.Use();
+                InventoryManager.Instance.UseItem();
             if (Input.GetMouseButtonDown(1))
-                Hotbar.Instance?.AltUse();
-
+                InventoryManager.Instance.AltUseItem();
             if (Input.anyKeyDown)
-                Hotbar.Instance?.KeyDown();
+                InventoryManager.Instance.KeyDown();
         }
     }
 }
