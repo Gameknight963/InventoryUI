@@ -12,10 +12,6 @@ namespace InventoryUI
         private readonly GameObject[] _slots = new GameObject[SlotCount];
         private int _selectedIndex = 0;
 
-        internal void Use() => InventoryManager.Instance.UseItem();
-        internal void AltUse() => InventoryManager.Instance.AltUseItem();
-        internal void KeyDown() => InventoryManager.Instance.KeyDown();
-
         public Hotbar(GameObject canvas)
         {
             Instance = this;
