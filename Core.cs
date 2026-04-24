@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using InventoryFramework;
-using VoidLib2;
 
 [assembly: MelonInfo(typeof(InventoryUI.Core), "InventoryUI", "1.0.0", "gameknight963")]
 
