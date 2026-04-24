@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using VoidLib2.Inventory;
 using MelonLoader;
 
 namespace InventoryUI
@@ -26,7 +25,6 @@ namespace InventoryUI
 
             if (Input.anyKeyDown)
                 Hotbar.Instance?.KeyDown();
-            Hotbar.Instance?.Tick();
         }
     }
 }
