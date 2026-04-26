@@ -1,6 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using Il2CppDG.Tweening;
+using Il2CppDG.Tweening.Core;
 using InventoryFramework;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace InventoryUI
 {
@@ -15,12 +17,16 @@ namespace InventoryUI
         private static readonly Color SlotNormal = new(0f, 0f, 0f, 0.7f);
         private static readonly Color SlotSelected = new(1f, 1f, 1f, 0.4f);
 
+        private readonly Text _itemLabel;
+        private const float LabelDuration = 2f;
+
         private readonly Action _onChanged;
 
         public Hotbar(GameObject canvas)
         {
             Instance = this;
             _onChanged = () => Refresh(InventoryManager.Instance.PlayerInventory.Items);
+            InventoryManager.Instance.PlayerInventory.OnChanged += _onChanged;
             GameObject hotbar = new("Hotbar");
             hotbar.transform.SetParent(canvas.transform, false);
             RectTransform rect = hotbar.AddComponent<RectTransform>();
@@ -37,8 +43,24 @@ namespace InventoryUI
             layout.childControlHeight = false;
             for (int i = 0; i < SlotCount; i++)
                 _slots[i] = CreateSlot(hotbar, i);
-        }
 
+            GameObject label = new("ItemLabel");
+            label.transform.SetParent(canvas.transform, false);
+            RectTransform labelRect = label.AddComponent<RectTransform>();
+            labelRect.anchorMin = new Vector2(0.5f, 0f);
+            labelRect.anchorMax = new Vector2(0.5f, 0f);
+            labelRect.pivot = new Vector2(0.5f, 0f);
+            labelRect.anchoredPosition = new Vector2(0f, 68f);
+            labelRect.sizeDelta = new Vector2(300f, 20f);
+            _itemLabel = label.AddComponent<Text>();
+            _itemLabel.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            _itemLabel.fontSize = 14;
+            _itemLabel.alignment = TextAnchor.MiddleCenter;
+            _itemLabel.color = Color.white;
+
+            Refresh(InventoryManager.Instance.PlayerInventory.Items);
+        }
+        
         public void Dispose()
         {
             InventoryManager.Instance.PlayerInventory.OnChanged -= _onChanged;
@@ -87,6 +109,23 @@ namespace InventoryUI
                 ? InventoryManager.Instance.PlayerInventory.Items[_selectedIndex]
                 : null;
             InventoryManager.Instance.SelectItem(item);
+
+            DOTween.Kill(_itemLabel);
+            if (item != null)
+            {
+                _itemLabel.text = item.Definition.Name;
+                _itemLabel.color = Color.white;
+                DOTween.To(
+                    (DOGetter<float>)(() => _itemLabel.color.a),
+                    (DOSetter<float>)(a => _itemLabel.color = new Color(1f, 1f, 1f, a)),
+                    0f,
+                    0.5f
+                ).SetDelay(1.5f).SetId(_itemLabel);
+            }
+            else
+            {
+                _itemLabel.text = "";
+            }
         }
 
         public void Refresh(IReadOnlyList<InventoryItem> items)
@@ -106,6 +145,8 @@ namespace InventoryUI
                     icon.enabled = item.Definition.Image != null;
                     if (item.Definition.Image != null)
                         icon.sprite = item.Definition.Image;
+                    else
+                        icon.sprite = null;
                     qty.text = item.Quantity > 1 ? item.Quantity.ToString() : "";
                 }
                 else

@@ -50,7 +50,7 @@ namespace InventoryUI
             grid.constraintCount = Columns;
 
             _root.SetActive(false);
-
+            Populate();
             _onItemRegistered = (_) => Populate();
             InventoryManager.Instance.OnItemRegistered += _onItemRegistered;
         }
