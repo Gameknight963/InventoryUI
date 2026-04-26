@@ -12,9 +12,15 @@ namespace InventoryUI
         private readonly GameObject[] _slots = new GameObject[SlotCount];
         private int _selectedIndex = 0;
 
+        private static readonly Color SlotNormal = new(0f, 0f, 0f, 0.7f);
+        private static readonly Color SlotSelected = new(1f, 1f, 1f, 0.4f);
+
+        private readonly Action _onChanged;
+
         public Hotbar(GameObject canvas)
         {
             Instance = this;
+            _onChanged = () => Refresh(InventoryManager.Instance.PlayerInventory.Items);
             GameObject hotbar = new("Hotbar");
             hotbar.transform.SetParent(canvas.transform, false);
             RectTransform rect = hotbar.AddComponent<RectTransform>();
@@ -31,6 +37,11 @@ namespace InventoryUI
             layout.childControlHeight = false;
             for (int i = 0; i < SlotCount; i++)
                 _slots[i] = CreateSlot(hotbar, i);
+        }
+
+        public void Dispose()
+        {
+            InventoryManager.Instance.PlayerInventory.OnChanged -= _onChanged;
         }
 
         private GameObject CreateSlot(GameObject parent, int index)
@@ -67,17 +78,11 @@ namespace InventoryUI
             return slot;
         }
 
-        public InventoryItem? GetSelectedItem()
-        {
-            IReadOnlyList<InventoryItem> items = InventoryManager.Instance.PlayerInventory.Items;
-            return _selectedIndex < items.Count ? items[_selectedIndex] : null;
-        }
-
         public void SelectSlot(int index)
         {
-            _slots[_selectedIndex].GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.7f);
+            _slots[_selectedIndex].GetComponent<Image>().color = SlotNormal;
             _selectedIndex = index;
-            _slots[_selectedIndex].GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.4f);
+            _slots[_selectedIndex].GetComponent<Image>().color = SlotSelected;
             InventoryItem? item = _selectedIndex < InventoryManager.Instance.PlayerInventory.Items.Count
                 ? InventoryManager.Instance.PlayerInventory.Items[_selectedIndex]
                 : null;
@@ -92,6 +97,9 @@ namespace InventoryUI
                 Image icon = slot.transform.Find("Icon").GetComponent<Image>();
                 Text qty = slot.transform.Find("Quantity").GetComponent<Text>();
                 Image bg = slot.GetComponent<Image>();
+                bg.color = i == _selectedIndex
+                    ? SlotSelected
+                    : SlotNormal;
                 if (i < items.Count)
                 {
                     InventoryItem item = items[i];
