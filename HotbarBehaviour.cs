@@ -1,7 +1,5 @@
-﻿using InventoryFramework;
-using MelonLoader;
+﻿using MelonLoader;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace InventoryUI
 {

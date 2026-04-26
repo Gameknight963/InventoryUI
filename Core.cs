@@ -9,9 +9,14 @@ namespace InventoryUI
 {
     public class Core : MelonMod
     {
+        private ItemPicker? _picker;
+        private Hotbar? _hotbar;
+
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
         {
             if (sceneName != "Version 1.9 POST") return;
+            _picker?.Dispose();
+            _hotbar?.Dispose();
 
             GameObject canvasObj = new("InventoryCanvas");
             Canvas canvas = canvasObj.AddComponent<Canvas>();
@@ -20,16 +25,14 @@ namespace InventoryUI
             canvasObj.AddComponent<GraphicRaycaster>();
             canvasObj.AddComponent<HotbarBehaviour>();
 
-            Hotbar hotbar = new(canvasObj);
-            InventoryManager.Instance.PlayerInventory.OnChanged += () =>
-                Hotbar.Instance!.Refresh(InventoryManager.Instance.PlayerInventory.Items);
+            _hotbar = new(canvasObj);
 
             // test item, uncomment if you need it
             //InventoryManager.Instance.RegisterItem(new ItemDefinition("test_item", "Test Item"));
             //InventoryManager.Instance.PlayerInventory.AddItem("test_item", 2);
 
             canvasObj.AddComponent<ItemPickerBehaviour>();
-            ItemPicker picker = new(canvasObj);
+            _picker = new ItemPicker(canvasObj);
         }
     }
 }
