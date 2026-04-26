@@ -18,6 +18,8 @@ namespace InventoryUI
         private GameObject _grid;
         private bool _visible = false;
 
+        private readonly Action<ItemDefinition> _onItemRegistered;
+
         public ItemPicker(GameObject canvas)
         {
             Instance = this;
@@ -48,7 +50,14 @@ namespace InventoryUI
             grid.constraintCount = Columns;
 
             _root.SetActive(false);
-            Populate();
+
+            _onItemRegistered = (_) => Populate();
+            InventoryManager.Instance.OnItemRegistered += _onItemRegistered;
+        }
+
+        public void Dispose()
+        {
+            InventoryManager.Instance.OnItemRegistered -= _onItemRegistered;
         }
 
         public void Populate()
