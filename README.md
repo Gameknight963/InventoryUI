@@ -14,7 +14,7 @@ A MelonLoader mod that provides a UI for InventoryFramework.
 
 ## Requirements
 
-- [MelonLoader](https://melonloader.github.io) (obviously)
+- [MelonLoader](https://melonwiki.xyz) (obviously)
 - [InventoryFramework](https://github.com/Gameknight963/InventoryFramework)
 - The game must have DOTween available (used for the item label fade)
 
