@@ -3,11 +3,8 @@ using UnityEngine;
 
 namespace InventoryUI
 {
-    [RegisterTypeInIl2Cpp]
     public class HotbarBehaviour : MonoBehaviour
     {
-        public HotbarBehaviour(IntPtr ptr) : base(ptr) { }
-
         public void Update()
         {
             if (Hotbar.Instance == null) return;

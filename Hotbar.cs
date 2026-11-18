@@ -1,5 +1,5 @@
-﻿using Il2CppDG.Tweening;
-using Il2CppDG.Tweening.Core;
+﻿using DG.Tweening;
+using DG.Tweening.Core;
 using InventoryFramework;
 using UnityEngine;
 using UnityEngine.UI;

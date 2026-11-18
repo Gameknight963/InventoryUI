@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using InventoryFramework;
+using UnityEngine.Events;
 
 namespace InventoryUI
 {
@@ -90,7 +91,7 @@ namespace InventoryUI
             bg.color = new Color(0.2f, 0.2f, 0.2f, 1f);
 
             Button button = cell.AddComponent<Button>();
-            button.onClick.AddListener(new Action(() =>
+            button.onClick.AddListener(new UnityAction(() =>
             {
                 InventoryManager.Instance.PlayerInventory.AddItem(def.Id);
             }));
